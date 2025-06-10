@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Docx Preview -->
+    <script src="https://cdn.jsdelivr.net/npm/docx-preview@0.1.15/dist/docx-preview.js"></script>
+
+    <style>
+      /* =========================================== */
+      /* == MODERN FILE MANAGEMENT SYSTEM - STYLING == */
+      /* =========================================== */
+
+      :root {
+        /* Color Scheme */
+        --primary: #4361ee;
+        --primary-dark: #3a56d4;
+        --secondary: #3f37c9;
+        --accent: #4895ef;
+        --danger: #f72585;
+        --success: #4cc9f0;
+        --warning: #f8961e;
+        --light: #f8f9fa;
+        --dark: #212529;
+        --gray: #6c757d;
+        --light-gray: #e9ecef;
+
+        /* UI Elements */
+        --card-bg: #ffffff;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+        --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+        --radius-sm: 6px;
+        --radius-md: 10px;
+        --radius-lg: 14px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f7ff;
+        color: var(--dark);
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 2rem 1rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+
+      /* Header Styles */
+      .header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        position: relative;
+      }
+
+      .header h1 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        background: linear-gradient(90deg, var(--primary), var(--accent));
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+      }
+
+      .header p {
+        color: var(--gray);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Card Layout */
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+      }
+
+      .card:hover {
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-2px);
+      }
+
+      .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: var(--dark);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .card-title i {
+        color: var(--primary);
+      }
+
+      /* Upload Form */
+      .upload-area {
+        position: relative;
+        border: 2px dashed var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 3rem 2rem;
+        text-align: center;
+        margin-bottom: 1.5rem;
+        transition: var(--transition);
+        background-color: rgba(67, 97, 238, 0.03);
+      }
+
+      .upload-area:hover {
+        border-color: var(--primary);
+        background-color: rgba(67, 97, 238, 0.05);
+      }
+
+      .upload-area.active {
+        border-color: var(--success);
+        background-color: rgba(76, 201, 240, 0.05);
+      }
+
+      .upload-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+      }
+
+      .upload-text {
+        margin-bottom: 1.5rem;
+      }
+
+      .upload-text h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+      }
+
+      .upload-text p {
+        color: var(--gray);
+      }
+
+      #fileToUpload {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-sm);
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-size: 1rem;
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      /* Preview Section */
+      #preview-container {
+        margin-top: 2rem;
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #file-preview-area {
+        border: 1px solid var(--border-color);
+        padding: 1.5rem;
+        border-radius: var(--radius-md);
+        background: white;
+        max-height: 500px;
+        overflow: auto;
+      }
+
+      #file-preview-area img {
+        max-width: 100%;
+        max-height: 400px;
+        display: block;
+        margin: 0 auto;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-sm);
+      }
+
+      #file-preview-area embed {
+        width: 100%;
+        height: 500px;
+        border: none;
+        border-radius: var(--radius-sm);
+      }
+
+      .file-info {
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--light-gray);
+        border-radius: var(--radius-sm);
+      }
+
+      .file-info p {
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .file-info strong {
+        color: var(--dark);
+      }
+
+      /* File List */
+      .file-list-container {
+        overflow-x: auto;
+      }
+
+      .file-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 0.75rem;
+      }
+
+      .file-table thead th {
+        text-align: left;
+        padding: 1rem 1.5rem;
+        background: var(--primary);
+        color: white;
+        font-weight: 500;
+      }
+
+      .file-table thead th:first-child {
+        border-top-left-radius: var(--radius-sm);
+      }
+
+      .file-table thead th:last-child {
+        border-top-right-radius: var(--radius-sm);
+      }
+
+      .file-table tbody tr {
+        background: white;
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .file-table tbody tr:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .file-table td {
+        padding: 1.25rem 1.5rem;
+        vertical-align: middle;
+        border: none;
+      }
+
+      .file-table td:first-child {
+        border-top-left-radius: var(--radius-sm);
+        border-bottom-left-radius: var(--radius-sm);
+      }
+
+      .file-table td:last-child {
+        border-top-right-radius: var(--radius-sm);
+        border-bottom-right-radius: var(--radius-sm);
+      }
+
+      .file-item {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+      }
+
+      .file-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+        font-size: 1.5rem;
+      }
+
+      .file-details {
+        flex: 1;
+      }
+
+      .file-name {
+        font-weight: 500;
+        color: var(--dark);
+        margin-bottom: 0.25rem;
+        word-break: break-word;
+      }
+
+      .file-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.85rem;
+        color: var(--gray);
+      }
+
+      .file-actions {
+        display: flex;
+        gap: 0.75rem;
+        justify-content: flex-end;
+      }
+
+      .btn-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+
+      .btn-download {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--primary);
+      }
+
+      .btn-download:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .btn-delete {
+        background: rgba(247, 37, 133, 0.1);
+        color: var(--danger);
+      }
+
+      .btn-delete:hover {
+        background: var(--danger);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .btn-preview {
+        background: rgba(76, 201, 240, 0.1);
+        color: var(--success);
+      }
+
+      .btn-preview:hover {
+        background: var(--success);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      /* Status Messages */
+      .status-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1000;
+        max-width: 400px;
+        width: 100%;
+      }
+
+      .status-msg {
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-md);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        animation: slideIn 0.3s ease forwards;
+        transform: translateX(120%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      @keyframes slideIn {
+        to {
+          transform: translateX(0);
+        }
+      }
+
+      .status-msg::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+      }
+
+      .status-msg.success {
+        background: linear-gradient(135deg, #4cc9f0, #4895ef);
+        color: white;
+      }
+
+      .status-msg.success::after {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .status-msg.error {
+        background: linear-gradient(135deg, #f72585, #f8961e);
+        color: white;
+      }
+
+      .status-msg.error::after {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .status-msg i {
+        font-size: 1.25rem;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        color: var(--gray);
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: var(--light-gray);
+      }
+
+      .empty-state h3 {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: var(--dark);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .header h1 {
+          font-size: 2rem;
+        }
+
+        .file-table thead {
+          display: none;
+        }
+
+        .file-table tbody tr {
+          display: block;
+          margin-bottom: 1rem;
+        }
+
+        .file-table td {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.75rem 1rem;
+        }
+
+        .file-table td::before {
+          content: attr(data-label);
+          font-weight: 500;
+          margin-right: 1rem;
+          color: var(--gray);
+        }
+
+        .file-actions {
+          justify-content: flex-end;
+        }
+
+        .file-item {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .file-meta {
+          flex-direction: column;
+          gap: 0.25rem;
+        }
+      }
+
+      /* Loading Animation */
+      .loading {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s ease-in-out infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--light-gray);
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--primary-dark);
+      }
+    </style>
+  </head>
+  <body>
+      <div class="status-container" id="status-container"></div>
+
+      <div class="card">
+        <h2 class="card-title">
+          <i class="fas fa-cloud-upload-alt"></i> Unggah File Baru
+        </h2>
+
+        <form
+          id="upload-form"
+          action="upload.php"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="upload-area" id="upload-area">
+            <div class="upload-icon">
+              <i class="fas fa-file-upload"></i>
+            </div>
+            <div class="upload-text">
+              <h3>Seret & Jatuhkan file Anda di sini</h3>
+              <p>Atau klik untuk memilih file dari komputer Anda</p>
+            </div>
+            <input type="file" name="fileToUpload" id="fileToUpload" required />
+            <div class="btn btn-primary" id="browse-btn">
+              <i class="fas fa-folder-open"></i> Pilih File
+            </div>
+          </div>
+
+          <div id="preview-container">
+            <h3 style="margin-bottom: 1rem">
+              <i class="fas fa-eye"></i> Pratinjau File
+            </h3>
+            <div id="file-preview-area"></div>
+            <div class="file-info" id="file-info" style="display: none">
+              <p><strong>Informasi File:</strong></p>
+              <p>Nama: <span id="info-name"></span></p>
+              <p>Tipe: <span id="info-type"></span></p>
+              <p>Ukuran: <span id="info-size"></span></p>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="submit-btn"
+            style="margin-top: 1.5rem; width: 100%"
+          >
+            <i class="fas fa-upload"></i> Unggah File
+          </button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-folder-open"></i> File Anda</h2>
+
+        <div class="file-list-container">
+          <table class="file-table">
+            <thead>
+              <tr>
+                <th>File</th>
+                <th>Ukuran</th>
+                <th>Diunggah</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="file-list">
+              <tr>
+                <td colspan="4" class="empty-state">
+                  <i class="fas fa-cloud"></i>
+                  <h3>Belum ada file</h3>
+                  <p>Unggah file pertama Anda untuk memulai</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div
+      id="preview-modal"
+      class="modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1001;
+        align-items: center;
+        justify-content: center;
+      "
+    >
+      <div
+        class="modal-content"
+        style="
+          background: white;
+          border-radius: var(--radius-md);
+          max-width: 90%;
+          max-height: 90%;
+          overflow: auto;
+          padding: 2rem;
+          position: relative;
+        "
+      >
+        <button
+          id="close-modal"
+          style="
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+          "
+        >
+          &times;
+        </button>
+        <div id="modal-preview-content"></div>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        // DOM Elements
+        const uploadForm = document.getElementById("upload-form");
+        const fileInput = document.getElementById("fileToUpload");
+        const uploadArea = document.getElementById("upload-area");
+        const browseBtn = document.getElementById("browse-btn");
+        const submitBtn = document.getElementById("submit-btn");
+        const previewContainer = document.getElementById("preview-container");
+        const previewArea = document.getElementById("file-preview-area");
+        const fileInfo = document.getElementById("file-info");
+        const fileList = document.getElementById("file-list");
+        const statusContainer = document.getElementById("status-container");
+        const previewModal = document.getElementById("preview-modal");
+        const modalContent = document.getElementById("modal-preview-content");
+        const closeModal = document.getElementById("close-modal");
+
+        // Event Listeners
+        browseBtn.addEventListener("click", () => fileInput.click());
+        closeModal.addEventListener(
+          "click",
+          () => (previewModal.style.display = "none")
+        );
+
+        // Initialize drag and drop
+        initDragAndDrop();
+
+        // File input change handler
+        fileInput.addEventListener("change", handleFileSelect);
+
+        // Form submission
+        uploadForm.addEventListener("submit", handleFormSubmit);
+
+        // Load file list on page load
+        document.addEventListener("DOMContentLoaded", () => {
+          getFileList();
+          displayStatusMessageFromUrl();
+        });
+
+        // Functions
+        function initDragAndDrop() {
+          // Drag enter
+          uploadArea.addEventListener("dragenter", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.classList.add("active");
+          });
+
+          // Drag over
+          uploadArea.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.classList.add("active");
+          });
+
+          // Drag leave
+          uploadArea.addEventListener("dragleave", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.classList.remove("active");
+          });
+
+          // Drop
+          uploadArea.addEventListener("drop", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            uploadArea.classList.remove("active");
+
+            if (e.dataTransfer.files.length) {
+              fileInput.files = e.dataTransfer.files;
+              handleFileSelect({ target: fileInput });
+            }
+          });
+        }
+
+        function handleFileSelect(event) {
+          const file = event.target.files[0];
+          previewArea.innerHTML = "";
+          fileInfo.style.display = "none";
+
+          if (!file) {
+            previewContainer.style.display = "none";
+            return;
+          }
+
+          // Show file info
+          document.getElementById("info-name").textContent = file.name;
+          document.getElementById("info-type").textContent =
+            file.type || "Unknown";
+          document.getElementById("info-size").textContent = formatFileSize(
+            file.size
+          );
+          fileInfo.style.display = "block";
+
+          // Show preview container
+          previewContainer.style.display = "block";
+
+          // Preview based on file type
+          if (file.type.startsWith("image/")) {
+            previewImage(file);
+          } else if (file.type === "application/pdf") {
+            previewPDF(file);
+          } else if (file.name.endsWith(".docx")) {
+            previewDocx(file);
+          } else if (file.type.startsWith("video/")) {
+            previewVideo(file);
+          } else if (file.type.startsWith("audio/")) {
+            previewAudio(file);
+          } else {
+            showGenericPreview(file);
+          }
+        }
+
+        function previewImage(file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = document.createElement("img");
+            img.src = e.target.result;
+            img.alt = file.name;
+            previewArea.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function previewPDF(file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const embed = document.createElement("embed");
+            embed.src = e.target.result + "#toolbar=0&navpanes=0";
+            embed.type = "application/pdf";
+            previewArea.appendChild(embed);
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function previewDocx(file) {
+          previewArea.innerHTML = "<p>Membuat pratinjau dokumen...</p>";
+          docx
+            .renderAsync(file, previewArea)
+            .then(() => console.log("DOCX preview rendered"))
+            .catch(() => {
+              previewArea.innerHTML =
+                "<p>Pratinjau tidak tersedia untuk dokumen ini. File akan tetap dapat diunggah.</p>";
+            });
+        }
+
+        function previewVideo(file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const video = document.createElement("video");
+            video.src = e.target.result;
+            video.controls = true;
+            video.style.maxWidth = "100%";
+            previewArea.appendChild(video);
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function previewAudio(file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const audio = document.createElement("audio");
+            audio.src = e.target.result;
+            audio.controls = true;
+            audio.style.width = "100%";
+            previewArea.appendChild(audio);
+          };
+          reader.readAsDataURL(file);
+        }
+
+        function showGenericPreview(file) {
+          const icon = getFileIcon(file);
+          previewArea.innerHTML = `
+                    <div style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 4rem; color: #4361ee; margin-bottom: 1rem;">${icon}</div>
+                        <h3 style="margin-bottom: 0.5rem;">${file.name}</h3>
+                        <p>Tipe file ini tidak mendukung pratinjau</p>
+                    </div>
+                `;
+        }
+
+        function getFileIcon(file) {
+          const ext = file.name.split(".").pop().toLowerCase();
+          const icons = {
+            pdf: '<i class="fas fa-file-pdf"></i>',
+            doc: '<i class="fas fa-file-word"></i>',
+            docx: '<i class="fas fa-file-word"></i>',
+            xls: '<i class="fas fa-file-excel"></i>',
+            xlsx: '<i class="fas fa-file-excel"></i>',
+            ppt: '<i class="fas fa-file-powerpoint"></i>',
+            pptx: '<i class="fas fa-file-powerpoint"></i>',
+            zip: '<i class="fas fa-file-archive"></i>',
+            rar: '<i class="fas fa-file-archive"></i>',
+            txt: '<i class="fas fa-file-alt"></i>',
+            csv: '<i class="fas fa-file-csv"></i>',
+            js: '<i class="fas fa-file-code"></i>',
+            html: '<i class="fas fa-file-code"></i>',
+            css: '<i class="fas fa-file-code"></i>',
+            json: '<i class="fas fa-file-code"></i>',
+          };
+
+          return icons[ext] || '<i class="fas fa-file"></i>';
+        }
+
+        function formatFileSize(bytes) {
+          if (bytes === 0) return "0 Bytes";
+          const k = 1024;
+          const sizes = ["Bytes", "KB", "MB", "GB"];
+          const i = Math.floor(Math.log(bytes) / Math.log(k));
+          return (
+            parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+          );
+        }
+
+        function handleFormSubmit(event) {
+          event.preventDefault();
+
+          if (!fileInput.files.length) {
+            showStatusMessage("Pilih file terlebih dahulu", false);
+            return;
+          }
+
+          const formData = new FormData(uploadForm);
+          const originalBtnText = submitBtn.innerHTML;
+
+          // Show loading state
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="loading"></span> Mengunggah...';
+
+          showStatusMessage("Mengunggah file...", true);
+
+          fetch("upload.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                showStatusMessage(
+                  data.message || "File berhasil diunggah",
+                  true
+                );
+                getFileList();
+                uploadForm.reset();
+                previewContainer.style.display = "none";
+                fileInfo.style.display = "none";
+              } else {
+                showStatusMessage(
+                  data.message || "Gagal mengunggah file",
+                  false
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              showStatusMessage("Gagal terhubung ke server", false);
+            })
+            .finally(() => {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = originalBtnText;
+            });
+        }
+
+        function getFileList() {
+          fileList.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center;">
+                            <div style="padding: 2rem;">
+                                <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                                <p style="margin-top: 1rem;">Memuat daftar file...</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+
+          fetch("list_files.php?t=" + new Date().getTime())
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.length > 0) {
+                fileList.innerHTML = data
+                  .map((file) => createFileRow(file))
+                  .join("");
+              } else {
+                fileList.innerHTML = `
+                                <tr>
+                                    <td colspan="4" class="empty-state">
+                                        <i class="fas fa-cloud"></i>
+                                        <h3>Belum ada file</h3>
+                                        <p>Unggah file pertama Anda untuk memulai</p>
+                                    </td>
+                                </tr>
+                            `;
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              fileList.innerHTML = `
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: var(--danger);">
+                                    Gagal memuat daftar file. Silakan coba lagi.
+                                </td>
+                            </tr>
+                        `;
+            });
+        }
+
+        function createFileRow(file) {
+          const icon = file.is_image
+            ? `<img src="${file.url}" alt="${file.name}" style="width: 48px; height: 48px; object-fit: cover; border-radius: var(--radius-sm);">`
+            : `<div class="file-icon">${getFileIcon({
+                name: file.name,
+              })}</div>`;
+
+          return `
+                    <tr>
+                        <td data-label="File">
+                            <div class="file-item">
+                                ${icon}
+                                <div class="file-details">
+                                    <div class="file-name">${file.name}</div>
+                                    <div class="file-meta">
+                                        <span>${file.type || "Unknown"}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label="Ukuran">${file.size}</td>
+                        <td data-label="Diunggah">${
+                          file.uploaded || "Unknown"
+                        }</td>
+                        <td data-label="Aksi">
+                            <div class="file-actions">
+                                <a href="${
+                                  file.url
+                                }" class="btn-action btn-download" download="${
+            file.name
+          }" title="Unduh">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                                ${
+                                  file.is_previewable
+                                    ? `
+                                <button class="btn-action btn-preview" data-url="${file.url}" data-type="${file.type}" title="Pratinjau">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                `
+                                    : ""
+                                }
+                                <button class="btn-action btn-delete" data-filename="${
+                                  file.name
+                                }" title="Hapus">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+        }
+
+        function showStatusMessage(message, isSuccess) {
+          const messageDiv = document.createElement("div");
+          messageDiv.className = `status-msg ${
+            isSuccess ? "success" : "error"
+          }`;
+          messageDiv.innerHTML = `
+                    <i class="fas ${
+                      isSuccess ? "fa-check-circle" : "fa-exclamation-circle"
+                    }"></i>
+                    <span>${message}</span>
+                `;
+
+          statusContainer.appendChild(messageDiv);
+
+          // Auto remove after 5 seconds
+          setTimeout(() => {
+            messageDiv.style.animation = "fadeOut 0.3s ease forwards";
+            setTimeout(() => messageDiv.remove(), 300);
+          }, 5000);
+        }
+
+        function displayStatusMessageFromUrl() {
+          const urlParams = new URLSearchParams(window.location.search);
+          const status = urlParams.get("status");
+          if (status) {
+            showStatusMessage(status, status.includes("berhasil"));
+            window.history.replaceState(
+              {},
+              document.title,
+              window.location.pathname
+            );
+          }
+        }
+
+        // Event delegation for file actions
+        fileList.addEventListener("click", (e) => {
+          // Delete button
+          if (e.target.closest(".btn-delete")) {
+            const btn = e.target.closest(".btn-delete");
+            const fileName = btn.dataset.filename;
+
+            if (confirm(`Apakah Anda yakin ingin menghapus "${fileName}"?`)) {
+              const formData = new FormData();
+              formData.append("file", fileName);
+
+              btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+              btn.disabled = true;
+
+              fetch("delete.php", { method: "POST", body: formData })
+                .then((response) => response.json())
+                .then((data) => {
+                  showStatusMessage(data.message, data.success);
+                  if (data.success) {
+                    const row = btn.closest("tr");
+                    row.style.transition = "all 0.3s ease";
+                    row.style.opacity = "0";
+                    row.style.height = "0";
+                    row.style.padding = "0";
+                    row.style.margin = "0";
+                    row.style.border = "none";
+
+                    setTimeout(() => {
+                      row.remove();
+
+                      // Show empty state if no files left
+                      if (fileList.querySelectorAll("tr").length === 0) {
+                        fileList.innerHTML = `
+                                                <tr>
+                                                    <td colspan="4" class="empty-state">
+                                                        <i class="fas fa-cloud"></i>
+                                                        <h3>Belum ada file</h3>
+                                                        <p>Unggah file pertama Anda untuk memulai</p>
+                                                    </td>
+                                                </tr>
+                                            `;
+                      }
+                    }, 300);
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                  showStatusMessage("Gagal menghapus file", false);
+                })
+                .finally(() => {
+                  btn.innerHTML = '<i class="fas fa-trash"></i>';
+                  btn.disabled = false;
+                });
+            }
+          }
+
+          // Preview button
+          if (e.target.closest(".btn-preview")) {
+            const btn = e.target.closest(".btn-preview");
+            const fileUrl = btn.dataset.url;
+            const fileType = btn.dataset.type;
+
+            modalContent.innerHTML = `
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem;"></i>
+                            <p>Memuat pratinjau...</p>
+                        </div>
+                    `;
+
+            previewModal.style.display = "flex";
+
+            if (fileType.startsWith("image/")) {
+              modalContent.innerHTML = `<img src="${fileUrl}" style="max-width: 100%; max-height: 80vh;">`;
+            } else if (fileType === "application/pdf") {
+              modalContent.innerHTML = `
+                            <embed src="${fileUrl}#toolbar=0&navpanes=0" type="application/pdf" style="width: 100%; height: 80vh;">
+                        `;
+            } else {
+              modalContent.innerHTML = `
+                            <div style="text-align: center; padding: 2rem;">
+                                <div style="font-size: 4rem; color: #4361ee; margin-bottom: 1rem;">
+                                    ${getFileIcon({
+                                      name: fileUrl.split("/").pop(),
+                                    })}
+                                </div>
+                                <h3 style="margin-bottom: 0.5rem;">${fileUrl
+                                  .split("/")
+                                  .pop()}</h3>
+                                <p>Tipe file ini tidak mendukung pratinjau</p>
+                            </div>
+                        `;
+            }
+          }
+        });
+
+        // Close modal when clicking outside content
+        previewModal.addEventListener("click", (e) => {
+          if (e.target === previewModal) {
+            previewModal.style.display = "none";
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+![sebelum unggah](./images/sebelum_unggah.png)
+![preview](./images/preview.png)
+![hasil upload](./images/hasil_upload.png)
+![hasil delete](./images/hasil_delete.png)
+![hasil unduh](./images/hasil_unduh.png)
